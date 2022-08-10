@@ -15,6 +15,7 @@ export const StudentRoutes = () => {
                 <Route path='/student/signup' element={<Student.Signup />} />
                 <Route path='/student/dashboard' element={<Student.Dashboard />} />
                 <Route path='/student/advisors' element={<Student.AdvisorsList />} />
+                <Route path='/student/requests/:status' element={<Student.RequestsList />} />
             </Routes>
         </>
     );

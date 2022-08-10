@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { axiosStudent } from "../../global/axios";
+import { axiosAdvisor } from "../../global/axios";
 import { AllContractsModel } from "../models/allContractsList.model";
 import { RequestDetailsModal } from "./RequestDetailsModal";
-
 
 const RequestsList = () => {
     const { status } = useParams<'status'>()
@@ -18,7 +17,7 @@ const RequestsList = () => {
     }
 
     const getContractsList = async () => {
-        const res = await axiosStudent({
+        const res = await axiosAdvisor({
           method: 'GET',
           url: '/requests',
           params: {
@@ -55,7 +54,7 @@ const RequestsList = () => {
                             <div className="col-lg-4">
                                 <div className="card">
                                     <div className="card-body">
-                                        <h6 className="card-subtitle mb-2 text-muted">Name: {contract?.advisor?.name} ~{contract?.advisor?.department}</h6>
+                                        <h6 className="card-subtitle mb-2 text-muted">Name: {contract?.student?.name} ~ {contract?.student?.ID}</h6>
                                         <h5 className="card-title">{contract?.project?.name}</h5>
                                         <p className="card-text">{contract?.project?.description}</p>
                                         <a className="card-link" onClick={() => handleAdvisorSelection(contract)}>Show details</a>

@@ -13,6 +13,8 @@ export const AdvisorRoutes = () => {
             <AdvisorLoginRoutes/>
             <Routes>
                 <Route path='/advisor/signup' element={<Advisor.Signup />} />
+                <Route path='/advisor/dashboard' element={<Advisor.Dashboard />} />
+                <Route path='/advisor/requests/:status' element={<Advisor.RequestsList />} />
             </Routes>
         </>
     );

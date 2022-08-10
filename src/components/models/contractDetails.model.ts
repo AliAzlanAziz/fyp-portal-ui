@@ -7,6 +7,11 @@ export class ContractDetailsModel  {
         name: string;
         department: string;
     };
+    student: {
+        _id: string;
+        name: string;
+        ID: string;
+    };
     project: {
         name: string,
         description?: string
