@@ -1,0 +1,11 @@
+#root {
+    height: 100vh;
+}
+
+.row {
+    height: 100vh;
+}
+
+.img{
+    filter: invert(100%);
+}
