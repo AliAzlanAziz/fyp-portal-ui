@@ -1,20 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, useRoutes } from 'react-router-dom';
 import Advisor from "../../components/advisor";
+import { UserRoles } from '../../components/enums/roles.enum';
+import { AuthContext } from '../../context/Authentication';
 
 const AdvisorLoginRoutes = () => useRoutes([
-    { path: "/advisor", element: <Advisor.Login /> },
-    { path: "/advisor/login", element: <Advisor.Login /> },
+    { path: "/", element: <Advisor.Login /> },
+    { path: "/login", element: <Advisor.Login /> },
 ])
 
 export const AdvisorRoutes = () => {
+    const { role, loggedin } = useContext(AuthContext)
+
     return (
         <>
             <AdvisorLoginRoutes/>
             <Routes>
-                <Route path='/advisor/signup' element={<Advisor.Signup />} />
-                <Route path='/advisor/dashboard' element={<Advisor.Dashboard />} />
-                <Route path='/advisor/requests/:status' element={<Advisor.RequestsList />} />
+                <Route path='/signup' element={<Advisor.Signup />} />
+            
+                {(role === UserRoles.ADVISOR && loggedin) &&
+                    <>
+                        <Route path='/dashboard' element={<Advisor.Dashboard />} />
+                        <Route path='/requests/:status' element={<Advisor.RequestsList />} />
+                    </>
+                }
             </Routes>
         </>
     );

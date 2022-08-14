@@ -8,12 +8,11 @@ import { UserSigninModel } from "../models/userSignin.model";
 type LoginProps = {
   onSubmit(form: UserSigninModel): void;
   signupURL: string;
+  role: UserRoles;
 };
 
 const Login = ({ ...props }: LoginProps) => {
-  const { role } = useContext(AuthContext);
-
-  const { onSubmit, signupURL } = props;
+  const { onSubmit, signupURL, role } = props;
   const [form, setForm] = useState<UserSigninModel>();
 
   const handleSubmit = (e: any): void => {

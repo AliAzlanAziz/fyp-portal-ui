@@ -6,8 +6,9 @@ import { axiosCommon } from "../global/axios";
 type AuthContextType = {
   loggedin: boolean;
   sessionToken: String;
-  setAuth(sessionToken: String): void;
+  setAuth(sessionToken: String, role: UserRoles): void;
   removeAuthState(): void;
+  getAuthState(): void;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   profile: UserModel;
@@ -20,8 +21,9 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   loggedin: false,
   sessionToken: "",
-  setAuth(sessionToken: String): void {},
+  setAuth(sessionToken: String, role: UserRoles): void {},
   removeAuthState(): void {},
+  getAuthState(): void {},
   loading: false,
   setLoading: (value: boolean | ((prevVar: boolean) => boolean)): void => {},
   profile: new UserModel(),
@@ -54,37 +56,45 @@ export const AuthContextProvider = ({
   const getProfile = async (): Promise<void> => {
     try {
       setLoading(true);
+
       if (loggedin) {
         const res = await axiosCommon({
           url: "/profile",
           method: "GET",
         });
-        if (res.status == 200) {
+        if (res.status === 200) {
           //set user info context
           // console.log(JSON.stringify(res.data))
+          localStorage.setItem("role", JSON.stringify(res.data.profile.role));
           setProfile(res.data.profile);
           setRole(res.data.profile.role);
         }
       }
+
       setLoading(false);
     } catch (error) {
+      console.log(error)
       setLoading(false);
     }
   };
 
   // Get current auth state from localStorage
-  const getAuthState = () => {
-    // console.log("get auth")
+  const getAuthState = (): void => {
     try {
       setLoading(true);
+      
+      const roleDataString = localStorage.getItem("role");
+      const roleData = JSON.parse(roleDataString || "");
+      setRole(roleData);
+
       const authDataString = localStorage.getItem("sessionToken");
       const authData = JSON.parse(authDataString || "");
-      // Configure axios headers
-      // configureAxiosHeaders(authData.sessionToken);
       setSessionToken(authData);
-      if (authData != "") {
+
+      if (authData !== "") {
         setLoggedin(true);
       }
+
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -92,14 +102,19 @@ export const AuthContextProvider = ({
   };
 
   // Update localStorage & context state
-  const setAuth = (sessionToken: String) => {
+  const setAuth = (sessionToken: String, role: UserRoles) => {
     try {
       setLoading(true);
       localStorage.setItem("sessionToken", JSON.stringify(sessionToken));
+      localStorage.setItem("role", JSON.stringify(role));
+
       // Configure axios headers
       // configureAxiosHeaders(auth.sessionToken);
       setSessionToken(sessionToken);
+      setRole(role)
+
       setLoggedin(true);
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -109,13 +124,18 @@ export const AuthContextProvider = ({
   const removeAuthState = async () => {
     try {
       setLoading(true);
+
       localStorage.setItem("sessionToken", JSON.stringify(""));
+      localStorage.setItem("role", JSON.stringify(0));
+
       // Configure axios headers
       // configureAxiosHeaders('');
+
       setSessionToken("");
-      setLoggedin(false);
       setProfile(new UserModel());
       setRole(UserRoles.NONE);
+      setLoggedin(false);
+
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -136,6 +156,7 @@ export const AuthContextProvider = ({
         sessionToken,
         setAuth,
         removeAuthState,
+        getAuthState,
         loggedin,
         loading,
         setLoading,

@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useRoutes } from 'react-router-dom';
+import {Routes, Route, useRoutes } from 'react-router-dom';
 import Panel from "../../components/panel";
 
 const PanelLoginRoutes = () => useRoutes([
-    { path: "/panel", element: <Panel.Login /> },
-    { path: "/panel/login", element: <Panel.Login /> },
+    { path: "/", element: <Panel.Login /> },
+    { path: "/login", element: <Panel.Login /> },
 ])
 
 export const PanelRoutes = () => {
@@ -12,7 +12,7 @@ export const PanelRoutes = () => {
         <>
             <PanelLoginRoutes/>
             <Routes>
-                <Route path='/panel/signup' element={<Panel.Signup />} />
+                <Route path='/signup' element={<Panel.Signup />} />
             </Routes>
         </>
     );

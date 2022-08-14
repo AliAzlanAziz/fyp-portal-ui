@@ -48,7 +48,7 @@ const RequestDetailsModal = ({...props}: RequestDetailsModalProps) => {
             })
 
             if(res.status === 200){
-                console.log(res.data.contract)
+                // console.log(res.data.contract)
                 setContract(res.data.contract)
             }
         }catch(error){

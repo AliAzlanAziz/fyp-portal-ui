@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { axiosStudent } from "../../global/axios";
+import { axiosAdmin } from "../../global/axios";
 import { AdvisorModel } from "../models/advisor.model";
-import { AdvisorRequestFormModal } from "./AdvisorRequestFormModal";
 
 const AdvisorsList = () => {
     const [selectedAdvisor, setSelectedAdvisor] = useState<AdvisorModel>();
     const [advisors, setAdvisors] = useState<AdvisorModel[]>();
-    const [show, setShow] = useState(false);
 
     const handleAdvisorSelection = (advisor: AdvisorModel) => {
         setSelectedAdvisor(advisor);
-        setShow(true);
     }
 
     const getAdvisorsList = async () => {
-        const res = await axiosStudent({
+        const res = await axiosAdmin({
           method: 'GET',
           url: '/advisors'
         })
@@ -41,7 +38,6 @@ const AdvisorsList = () => {
                     ))}
                 </div>
             </div>
-            <AdvisorRequestFormModal show={show} setShow={setShow} advisor={selectedAdvisor} />
         </div>
     )
 }

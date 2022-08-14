@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { AdvisorModel } from "../models/advisor.model";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {

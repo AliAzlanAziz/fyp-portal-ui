@@ -8,15 +8,15 @@ import { UserSignupModel } from "../models/userSignup.model";
 type SignupProps = {
   onSubmit(form: UserSignupModel): void;
   signinURL: string;
+  role: UserRoles;
 };
 
 const Signup = ({ ...props }: SignupProps) => {
-  const { role } = useContext(AuthContext);
-
-  const { onSubmit, signinURL } = props;
+  const { onSubmit, signinURL, role } = props;
   const [form, setForm] = useState<UserSignupModel>();
 
-  const handleSubmit = (): void => {
+  const handleSubmit = (e: any): void => {
+    e.preventDefault()
     onSubmit(form as UserSignupModel);
   };
 
@@ -104,7 +104,7 @@ const Signup = ({ ...props }: SignupProps) => {
               Already have an account? Click here to{" "}
               <Link to={signinURL}>Login</Link>
             </span>
-            <button className="btn signup" onClick={handleSubmit}>
+            <button className="btn signup" onClick={(e) => handleSubmit(e)}>
               Create Account
             </button>
           </form>
