@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Toast } from "react-bootstrap";
 import { ContractModel } from "../models/contract.model";
-import "../../styling/form.css";
+import "../../styling/modalForm.css";
 import { AdvisorModel } from "../models/advisor.model";
 import { axiosStudent } from "../../global/axios";
 
@@ -49,9 +49,6 @@ const AdvisorRequestFormModal = ({
     }
   };
 
-  // useEffect(() => {
-  // }, []);
-
   return (
     <>
       <Modal
@@ -63,7 +60,6 @@ const AdvisorRequestFormModal = ({
         <Modal.Header closeButton>
           <Modal.Title>Advisor Request Form</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
           <div className="form-container">
             <form className="form-horizontal">
               <div className="form-group">
@@ -185,7 +181,6 @@ const AdvisorRequestFormModal = ({
               </div>
             </form>
           </div>
-        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>
             Close

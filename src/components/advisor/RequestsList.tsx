@@ -3,6 +3,7 @@ import { Toast } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { axiosAdvisor } from "../../global/axios";
 import { AllContractsModel } from "../models/allContractsList.model";
+import { AdvisorFormModal } from "./AdvisorFormModal";
 import { RequestDetailsModal } from "./RequestDetailsModal";
 
 const RequestsList = () => {
@@ -10,14 +11,15 @@ const RequestsList = () => {
   const [selectedContract, setSelectedContract] = useState<AllContractsModel>();
   const [contracts, setContracts] = useState<AllContractsModel[]>();
   const [closed, setClosed] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showAdvisorFormModal, setShowAdvisorFormModal] = useState(false);
   const [showRes, setShowRes] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [res, setRes] = useState<String>("");
 
   const handleAdvisorSelection = (contract: AllContractsModel) => {
     setSelectedContract(contract);
-    setShowModal(true);
+    setShowDetailsModal(true);
   };
 
   const acceptRequest = async (contract: AllContractsModel) => {
@@ -121,15 +123,30 @@ const RequestsList = () => {
     }
   };
 
+  const openAdvisorForm = (contract: AllContractsModel) => {
+    setSelectedContract(contract);
+    setShowAdvisorFormModal(true);
+  }
+
   useEffect(() => {
     getContractsList();
   }, []);
 
-  if (showModal) {
+  if (showDetailsModal) {
     return (
       <RequestDetailsModal
-        show={showModal}
-        setShow={setShowModal}
+        show={showDetailsModal}
+        setShow={setShowDetailsModal}
+        id={selectedContract?._id}
+      />
+    );
+  }
+
+  if (showAdvisorFormModal) {
+    return (
+      <AdvisorFormModal
+        show={showAdvisorFormModal}
+        setShow={setShowAdvisorFormModal}
         id={selectedContract?._id}
       />
     );
@@ -173,7 +190,7 @@ const RequestsList = () => {
                   <div className="card">
                     <div className="card-body">
                       <h6 className="card-subtitle mb-2 text-muted">
-                        Name: {contract?.student?.name} ~{" "}
+                        {contract?.student?.name} ~{" "}
                         {contract?.student?.ID}
                       </h6>
                       <h5 className="card-title">{contract?.project?.name}</h5>
@@ -203,12 +220,21 @@ const RequestsList = () => {
                         </div>
                       )}
                       {status && status === "1" && !closed && (
-                        <a
-                          className="btn btn-primary ms-5"
-                          onClick={() => closeRequest(contract)}
-                        >
-                          Close Request
-                        </a>
+                        <div className="btn-group ms-2">
+                          {contract?.advisorForm?._id && 
+                          (<a
+                            className="btn btn-dark"
+                            onClick={() => openAdvisorForm(contract)}
+                          >
+                            Advisor Form
+                          </a>)}
+                          <a
+                            className="btn btn-primary"
+                            onClick={() => closeRequest(contract)}
+                          >
+                            Close Request
+                          </a>
+                        </div>
                       )}
                     </div>
                   </div>

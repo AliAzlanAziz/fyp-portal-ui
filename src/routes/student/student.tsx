@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, useRoutes } from 'react-router-dom';
+import { Routes, Route, useRoutes } from 'react-router-dom';
 import { UserRoles } from '../../components/enums/roles.enum';
 import Student from "../../components/student";
 import { AuthContext } from '../../context/Authentication';

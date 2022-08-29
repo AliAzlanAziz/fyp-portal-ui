@@ -1,20 +1,23 @@
 import { AcceptanceStatus } from "../enums/contract.enum";
 
-export class AllContractsModel  {
-    _id?: String;
+export class AllContractsModel  { // list of requests
+    _id?: string;
     student?: {
-        _id: String;
-        name: String;
-        ID: String;
+        _id?: string;
+        name?: string;
+        ID?: string;
     };
     advisor?: {
-        _id: String;
-        name: String;
-        department: String;
+        _id?: string;
+        name?: string;
+        department?: string;
     };
     project?: {
-        name?: String,
-        description?: String
+        name?: string,
+        description?: string
+    };
+    advisorForm?: {
+        _id?: string
     };
     acceptance?: AcceptanceStatus;
     isClosed?: Boolean;

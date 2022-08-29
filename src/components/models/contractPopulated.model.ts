@@ -1,9 +1,17 @@
 import { AcceptanceStatus } from "../enums/contract.enum";
 
-export class ContractModel  { //contract details
+export class ContractPopulatedModel  { //contract details
     id?: string;
-    student?: string;
-    advisor?: string;
+    student?:{
+        _id?: string;
+        name?: string;
+        ID?: string;
+    };
+    advisor?:  {
+        _id?: string;
+        name?: string;
+        department?: string;
+    };
     project?: {
         name?: string,
         description?: string

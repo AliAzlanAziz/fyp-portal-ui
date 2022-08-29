@@ -12,8 +12,20 @@ const Signup = () => {
   const [success, setSuccess ] = useState<boolean>(false);
   const [msg, setMsg ] = useState<String>('');
 
+  const isFormValid = (form: UserSignupModel): boolean => {
+    if(form.ID && form.ID.length > 7){
+      setSuccess(false);
+      setMsg('Student ID length cannot be greater than seven characters');
+      setShow(true);
+      return false
+    }
+    return true
+  }
+
   const onSubmit = async (form: UserSignupModel) => {
     try{
+      if(!isFormValid(form)) return;
+
       const res = await axiosStudent({
         method: 'POST',
         url: '/signup',

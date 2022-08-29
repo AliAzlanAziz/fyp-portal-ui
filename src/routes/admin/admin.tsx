@@ -23,6 +23,8 @@ export const AdminRoutes = () => {
                         <Route path='/dashboard' element={<Admin.Dashboard />} />
                         <Route path='/students' element={<Admin.StudentsList />} />
                         <Route path='/advisors' element={<Admin.AdvisorsList />} />
+                        <Route path='/listforpanel' element={<Admin.ListForPanel />} />
+                        <Route path='/panels' element={<Admin.PanelsList />} />
                     </>
                 }
             </Routes>
