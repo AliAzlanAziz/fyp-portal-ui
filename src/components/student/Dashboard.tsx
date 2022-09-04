@@ -10,13 +10,13 @@ const Dashboard = () => {
                     <Link className="list-group-item list-group-item-action bg-dark text-light" to="/student/advisors">
                         Advisors
                     </Link>
-                    <Link className="list-group-item list-group-item-action bg-warning" to="/student/requests/0">
+                    <Link className="list-group-item list-group-item-action bg-dark text-light" to="/student/requests/0">
                         Request Pending
                     </Link>
-                    <Link className="list-group-item list-group-item-action bg-priamry" to="/student/requests/1">
+                    <Link className="list-group-item list-group-item-action bg-dark text-light" to="/student/requests/1">
                         Request Accepted
                     </Link>
-                    <Link className="list-group-item list-group-item-action bg-danger" to="/student/requests/-1">
+                    <Link className="list-group-item list-group-item-action bg-dark text-light" to="/student/requests/-1">
                         Request Reject
                     </Link>
                 </div>

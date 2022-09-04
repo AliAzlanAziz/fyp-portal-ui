@@ -1,7 +1,7 @@
 import { AcceptanceStatus } from "../enums/contract.enum";
 
 export class ContractModel  { //contract details
-    id?: string;
+    _id?: string;
     student?: string;
     advisor?: string;
     project?: {
@@ -49,5 +49,10 @@ export class ContractModel  { //contract details
             ID?: string;
         };
         referenceNo?: string;
+    };
+    panel?: string;
+    marks?: {
+        admin?: Number,
+        advisor?: Number
     }
 }

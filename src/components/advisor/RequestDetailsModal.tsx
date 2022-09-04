@@ -12,33 +12,7 @@ type RequestDetailsModalProps = {
 
 const RequestDetailsModal = ({ ...props }: RequestDetailsModalProps) => {
   const { show, setShow, id } = props;
-  const [contract, setContract] = useState<ContractDetailsModel>({
-    id: "",
-    advisor: {
-      _id: "",
-      name: "",
-      department: "",
-    },
-    student: {
-      _id: "",
-      name: "",
-      ID: "",
-    },
-    project: {
-      name: "",
-      description: "",
-    },
-    studentOne: {
-      name: "",
-      ID: "",
-    },
-    studentTwo: {
-      name: "",
-      ID: "",
-    },
-    acceptance: 0,
-    isClosed: false,
-  });
+  const [contract, setContract] = useState<ContractDetailsModel>();
 
   const getRequestDetails = async () => {
     try {

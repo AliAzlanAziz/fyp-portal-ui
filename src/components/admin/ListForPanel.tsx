@@ -9,6 +9,7 @@ const ListForPanel = () => {
   const [panelList, setPanelList] = useState<PanelListModel[]>([]);
   const [panelMembers, setPanelMembers] = useState<PanelListModel[]>([]);
   const [panelName, setPanelName] = useState<string>('');
+  const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
   const [showMsg, setShowMsg] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [msg, setMsg] = useState<String>("");
@@ -39,6 +40,7 @@ const ListForPanel = () => {
 
   const handleSubmit = async () => {
     try{
+      setSubmitDisabled(true);
       // if() //apply least panel members limit 
       const ids = panelMembers.map(panelMember => panelMember._id)
       const res = await axiosAdmin({
@@ -62,10 +64,12 @@ const ListForPanel = () => {
       }
       setMsg(res.data.message);
       setShowMsg(true);
+      setSubmitDisabled(false);
     }catch(error: any){
       setSuccess(false);
       setMsg(error?.response?.data?.message);
       setShowMsg(true);
+      setSubmitDisabled(false);
       console.log(error)
     }
   }
@@ -151,7 +155,7 @@ const ListForPanel = () => {
                   <br />
                 </div>
               ))}
-              <a onClick={handleSubmit} className='btn btn-primary'>Submit</a>
+              {!submitDisabled && <a onClick={handleSubmit} className='btn btn-primary'>Submit</a>}
             </form>
           </div>
         </div>

@@ -1,13 +1,14 @@
 import { AcceptanceStatus } from "../enums/contract.enum";
+import { PanelPopulatedModel } from "./panelPopulated.model";
 
-export class ContractPopulatedModel  { //contract details
-    id?: string;
-    student?:{
+export class ContractPopulatedModel  { //contract details populated
+    _id?: string;
+    student?: {
         _id?: string;
         name?: string;
         ID?: string;
     };
-    advisor?:  {
+    advisor?: {
         _id?: string;
         name?: string;
         department?: string;
@@ -57,5 +58,10 @@ export class ContractPopulatedModel  { //contract details
             ID?: string;
         };
         referenceNo?: string;
+    };
+    panel?: PanelPopulatedModel;
+    marks?: {
+        admin?: Number,
+        advisor?: Number
     }
 }

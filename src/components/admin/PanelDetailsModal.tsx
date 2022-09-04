@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Toast } from "react-bootstrap";
+import { Modal, Button, Toast, Form } from "react-bootstrap";
 import "../../styling/modalForm.css";
 import { axiosAdmin } from "../../global/axios";
 import { PanelPopulatedModel } from "../models/panelPopulated.model";
 import { PanelListModel } from "../models/panelList.model";
 import { UserRoles } from "../enums/roles.enum";
+import { StudentModel } from "../models/student.model";
+import { ContractPopulatedModel } from "../models/contractPopulated.model";
 
 type PanelDetailsModalProps = {
   show: boolean;
@@ -15,6 +17,9 @@ type PanelDetailsModalProps = {
 const PanelDetailsModal = ({ ...props }: PanelDetailsModalProps) => {
   const { show, setShow, id } = props;
   const [panel, setPanel] = useState<PanelPopulatedModel>();
+  const [contracts, setContracts] = useState<ContractPopulatedModel[]>([]);
+  const [selectedContracts, setSelectedContracts] = useState<ContractPopulatedModel[]>([]);
+  const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
   const [showRes, setShowRes] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [res, setRes] = useState<String>("");
@@ -27,13 +32,95 @@ const PanelDetailsModal = ({ ...props }: PanelDetailsModalProps) => {
       });
 
       if (res.status === 200) {
-        // console.log(res.data.contract)
         setPanel(res.data.panel);
       }
+
+      const newList: ContractPopulatedModel[] = []
+      for(const id of res.data.panel.contracts){
+        const contract: ContractPopulatedModel = {
+          _id: id
+        };
+
+        newList.push(contract)
+      }
+      setSelectedContracts(newList)
     } catch (error) {
       console.log(error);
     }
   };
+
+  const getAllContracts = async () => {
+    const res = await axiosAdmin({
+      method: "GET",
+      url: "/contractsnotinpanel",
+    });
+
+    if (res.status === 200) {
+      setContracts(res.data.contracts);
+    }
+  };
+
+  const handleStudentSelection = (contract: ContractPopulatedModel) => {
+    const index = selectedContracts.findIndex(
+      (cont) => cont._id == contract._id
+    );
+    if (index !== -1) {
+      const newList: ContractPopulatedModel[] = [...selectedContracts];
+      newList.splice(index, 1);
+
+      setSelectedContracts(newList);
+      return;
+    }
+
+    const newList: StudentModel[] = [...selectedContracts];
+    newList.push(contract);
+
+    setSelectedContracts(newList);
+  };
+
+  const isSelected = (contract: ContractPopulatedModel): boolean => {
+    const index = selectedContracts.findIndex(
+      (cont) => cont._id == contract._id
+    );
+
+    if (index === -1) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    try{
+      setSubmitDisabled(true);
+      const ids = selectedContracts.map(contract => contract._id)
+      const res = await axiosAdmin({
+        method: "POST",
+        url: "/panel/addcontracts",
+        data: {
+          panel: {
+            id: id,
+            contracts: ids,
+          }
+        }
+      });
+
+      if(res.status === 200){
+        setSuccess(true);
+        getAllContracts();
+      }else{
+        setSuccess(false);
+      }
+      setRes(res.data.message);
+      setShowRes(true);
+      setSubmitDisabled(false);
+    }catch(error: any){
+      setSuccess(false);
+      setRes(error?.response?.data?.message);
+      setShowRes(true);
+      setSubmitDisabled(false);
+    }
+  }
 
   const closeRequest = async () => {
     try {
@@ -67,6 +154,7 @@ const PanelDetailsModal = ({ ...props }: PanelDetailsModalProps) => {
 
   useEffect(() => {
     getPanelDetails();
+    getAllContracts();
   }, []);
 
   return (
@@ -86,30 +174,64 @@ const PanelDetailsModal = ({ ...props }: PanelDetailsModalProps) => {
           </div>
         </Modal.Header>
 
-        <div>
-          <form className="form-horizontal">
-            <h3 className="text-center text-dark form-group my-3">
-              {panel?.name}
-            </h3>
-            {panel?.members?.map((panel: PanelListModel, index: number) => (
-              <div
-                className="form-group col-6 text-center mb-3"
-                key={panel._id}
-              >
-                <h5>Member {index + 1}</h5>
-                {panel?.role === UserRoles.ADVISOR && (
-                  <h6>{`Advisor: ${panel?.name} ~${panel?.department}`}</h6>
-                )}
-                {panel?.role === UserRoles.PANEL && (
-                  <h6>{`Staff: ${panel?.name} ${
-                    panel?.department != undefined
-                      ? " ~" + panel?.department
-                      : ""
-                  }`}</h6>
-                )}
-              </div>
-            ))}
-          </form>
+        <div className="container">
+          <div className="row overflow-auto">
+            <div className="col-6 align-self-center">
+              <h3 className="text-center my-2">
+                {panel?.name}
+              </h3>
+              {panel?.members?.map((panel: PanelListModel, index: number) => (
+                <div
+                  className="text-center mb-2"
+                  key={panel._id}
+                >
+                  <h5>Member {index + 1}</h5>
+                  {panel?.role === UserRoles.ADVISOR && (
+                    <h6>{`Advisor: ${panel?.name} ~${panel?.department}`}</h6>
+                  )}
+                  {panel?.role === UserRoles.PANEL && (
+                    <h6>{`Staff: ${panel?.name} ${
+                      panel?.department != undefined
+                        ? " ~" + panel?.department
+                        : ""
+                    }`}</h6>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="col-6 text-center">
+              <h3 className="text-center my-2">
+                FYP Groups
+              </h3>
+              {contracts?.map((contract: ContractPopulatedModel, index: number) => (
+                <div className="text-center mb-2" key={contract._id}>
+                  <Form.Check
+                    inline
+                    label={
+                      "Student: " +
+                      contract?.student?.name +
+                      " ~" +
+                      contract?.student?.ID +
+                      "| Advisor: " +
+                      contract?.advisor?.name +
+                      " ~" +
+                      contract?.advisor?.department + 
+                      "| Project: " +
+                      contract?.project?.name
+                    }
+                    name="group1"
+                    type="checkbox"
+                    id={contract?._id}
+                    onChange={() => handleStudentSelection(contract)}
+                    checked={isSelected(contract)}
+                  />
+                  <br />
+                  <br />
+                </div>
+              ))}
+              {!submitDisabled && <a onClick={handleSubmit} className='btn btn-primary mb-2'>Submit</a>}
+            </div>
+          </div>
         </div>
 
         <Modal.Footer>

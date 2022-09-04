@@ -186,7 +186,7 @@ const RequestsList = () => {
           {contracts?.map(
             (contract: AllContractsModel, index: number) =>
               contract.isClosed === closed && (
-                <div className="col-lg-4" key={index}>
+                <div className="col-lg-6" key={index}>
                   <div className="card">
                     <div className="card-body">
                       <h6 className="card-subtitle mb-2 text-muted">
@@ -204,7 +204,7 @@ const RequestsList = () => {
                         Show details
                       </a>
                       {status && status === "0" && !closed && (
-                        <div className="btn-group ms-5">
+                        <div className="btn-group ms-5 d-flex float-end">
                           <a
                             className="btn btn-dark ms-5"
                             onClick={() => acceptRequest(contract)}
@@ -220,7 +220,7 @@ const RequestsList = () => {
                         </div>
                       )}
                       {status && status === "1" && !closed && (
-                        <div className="btn-group ms-2">
+                        <div className="btn-group ms-2 d-flex float-end">
                           {contract?.advisorForm?._id && 
                           (<a
                             className="btn btn-dark"

@@ -146,7 +146,7 @@ const RequestsList = () => {
           {contracts?.map(
             (contract: AllContractsModel, index: number) =>
               contract.isClosed === closed && (
-                <div className="col-lg-4" key={index}>
+                <div className="col-lg-6" key={index}>
                   <div className="card">
                     <div className="card-body">
                       <h6 className="card-subtitle mb-2 text-muted">
@@ -165,27 +165,29 @@ const RequestsList = () => {
                         Show details
                       </a>
 
-                      {(status && status === '1' && contract?.advisorForm?._id && !closed) && (
-                        <a
-                          className="btn btn-dark ms-5"
-                          onClick={() => openAdvisorForm(contract)}
-                        >
-                        See Advisor Form
-                      </a>)}
-                      {(status && status === '1' && !contract?.advisorForm?._id && !closed) && ( 
-                        <a
-                          className="btn btn-dark ms-5"
-                          onClick={() => openFillAdvisorForm(contract)}
-                        >
-                        Fill Advisor Form
-                      </a>)}
-                      
-                      {(status && status === '0' && !closed) && (
-                        <a
-                            className="btn btn-primary ms-5"
-                            onClick={() => closeRequest(contract)}>
-                        Close Request
-                      </a>)}
+                      <div className="btn-group ms-5 d-flex float-end">
+                        {(status && status === '1' && contract?.advisorForm?._id && !closed) && (
+                          <a
+                            className="btn btn-dark ms-5"
+                            onClick={() => openAdvisorForm(contract)}
+                          >
+                          See Advisor Form
+                        </a>)}
+                        {(status && status === '1' && !contract?.advisorForm?._id && !closed) && ( 
+                          <a
+                            className="btn btn-dark ms-5"
+                            onClick={() => openFillAdvisorForm(contract)}
+                          >
+                          Fill Advisor Form
+                        </a>)}
+                        
+                        {(status && status === '0' && !closed) && (
+                          <a
+                              className="btn btn-primary ms-5"
+                              onClick={() => closeRequest(contract)}>
+                          Close Request
+                        </a>)}
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -25,6 +25,7 @@ export const AdminRoutes = () => {
                         <Route path='/advisors' element={<Admin.AdvisorsList />} />
                         <Route path='/listforpanel' element={<Admin.ListForPanel />} />
                         <Route path='/panels' element={<Admin.PanelsList />} />
+                        <Route path='/fypgroups' element={<Admin.ProjectsList />} />
                     </>
                 }
             </Routes>
