@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { axiosAdvisor } from "../../global/axios";
 import { AllContractsModel } from "../models/allContractsList.model";
 import { AdvisorFormModal } from "./AdvisorFormModal";
+import LogFormModal from "./LogFormModal";
 import { RequestDetailsModal } from "./RequestDetailsModal";
 
 const RequestsList = () => {
@@ -13,6 +14,7 @@ const RequestsList = () => {
   const [closed, setClosed] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showAdvisorFormModal, setShowAdvisorFormModal] = useState(false);
+  const [showLogFormModal, setShowLogFormModal] = useState(false);
   const [showRes, setShowRes] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [res, setRes] = useState<String>("");
@@ -126,7 +128,12 @@ const RequestsList = () => {
   const openAdvisorForm = (contract: AllContractsModel) => {
     setSelectedContract(contract);
     setShowAdvisorFormModal(true);
-  }
+  };
+
+  const openLogForm = (contract: AllContractsModel) => {
+    setSelectedContract(contract);
+    setShowLogFormModal(true);
+  };
 
   useEffect(() => {
     getContractsList();
@@ -152,36 +159,48 @@ const RequestsList = () => {
     );
   }
 
+  if (showLogFormModal) {
+    return (
+      <LogFormModal
+        show={showLogFormModal}
+        setShow={setShowLogFormModal}
+        id={selectedContract?._id}
+      />
+    );
+  }
+
   return (
     <div>
       <div className="container">
         {status === "0" && <h3 className="text-center">Pending Requests</h3>}
         {status === "1" && <h3 className="text-center">Accepted Requests</h3>}
         {status === "-1" && <h3 className="text-center">Rejected Requests</h3>}
-        {status && status !== "-1" && <div className="btn-group mb-3">
-          <button
-            type="button"
-            className={
-              closed
-                ? "btn btn-outline-primary active"
-                : "btn btn-outline-primary"
-            }
-            onClick={() => setClosed(true)}
-          >
-            Closed
-          </button>
-          <button
-            type="button"
-            className={
-              !closed
-                ? "btn btn-outline-secondary active"
-                : "btn btn-outline-secondary"
-            }
-            onClick={() => setClosed(false)}
-          >
-            Opened
-          </button>
-        </div>}
+        {status && status !== "-1" && (
+          <div className="btn-group mb-3">
+            <button
+              type="button"
+              className={
+                closed
+                  ? "btn btn-outline-primary active"
+                  : "btn btn-outline-primary"
+              }
+              onClick={() => setClosed(true)}
+            >
+              Closed
+            </button>
+            <button
+              type="button"
+              className={
+                !closed
+                  ? "btn btn-outline-secondary active"
+                  : "btn btn-outline-secondary"
+              }
+              onClick={() => setClosed(false)}
+            >
+              Opened
+            </button>
+          </div>
+        )}
         <div className="row">
           {contracts?.map(
             (contract: AllContractsModel, index: number) =>
@@ -190,8 +209,7 @@ const RequestsList = () => {
                   <div className="card">
                     <div className="card-body">
                       <h6 className="card-subtitle mb-2 text-muted">
-                        {contract?.student?.name} ~{" "}
-                        {contract?.student?.ID}
+                        {contract?.student?.name} ~ {contract?.student?.ID}
                       </h6>
                       <h5 className="card-title">{contract?.project?.name}</h5>
                       <p className="card-text">
@@ -202,6 +220,12 @@ const RequestsList = () => {
                         onClick={() => handleAdvisorSelection(contract)}
                       >
                         Show details
+                      </a>
+                      <a
+                        className="card-link"
+                        onClick={() => openLogForm(contract)}
+                      >
+                        Log form
                       </a>
                       {status && status === "0" && !closed && (
                         <div className="btn-group ms-5 d-flex float-end">
@@ -221,13 +245,14 @@ const RequestsList = () => {
                       )}
                       {status && status === "1" && !closed && (
                         <div className="btn-group ms-2 d-flex float-end">
-                          {contract?.advisorForm?._id && 
-                          (<a
-                            className="btn btn-dark"
-                            onClick={() => openAdvisorForm(contract)}
-                          >
-                            Advisor Form
-                          </a>)}
+                          {contract?.advisorForm?._id && (
+                            <a
+                              className="btn btn-dark"
+                              onClick={() => openAdvisorForm(contract)}
+                            >
+                              Advisor Form
+                            </a>
+                          )}
                           <a
                             className="btn btn-primary"
                             onClick={() => closeRequest(contract)}

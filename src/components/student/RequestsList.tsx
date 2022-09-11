@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { axiosStudent } from "../../global/axios";
 import { AllContractsModel } from "../models/allContractsList.model";
 import { AdvisorFormModal } from "./AdvisorFormModal";
+import LogFormModal from "./LogFormModal";
 import { PanelDetailsModal } from "./PanelDetailsModal";
 import { RequestDetailsModal } from "./RequestDetailsModal";
 
@@ -14,6 +15,7 @@ const RequestsList = () => {
   const [closed, setClosed] = useState(false);
   const [showRequestDetailsModal, setShowRequestDetailsModal] = useState(false);
   const [showAdvisorFormModal, setShowAdvisorFormModal] = useState(false);
+  const [showLogFormModal, setShowLogFormModal] = useState(false);
   const [showPanelDetailsModal, setShowPanelDetailsModal] = useState(false);
   const [showFillAdvisorFormModal, setShowFillAdvisorFormModal] = useState(false);
   const [showRes, setShowRes] = useState<boolean>(false);
@@ -83,6 +85,11 @@ const RequestsList = () => {
     }
   };
 
+  const openLogForm = (contract: AllContractsModel) => {
+    setSelectedContract(contract);
+    setShowLogFormModal(true);
+  };
+
   useEffect(() => {
     getContractsList();
   }, []);
@@ -125,6 +132,16 @@ const RequestsList = () => {
         setShow={setShowFillAdvisorFormModal}
         id={selectedContract?._id}
         disabled={false}
+      />
+    );
+  }
+
+  if (showLogFormModal) {
+    return (
+      <LogFormModal
+        show={showLogFormModal}
+        setShow={setShowLogFormModal}
+        id={selectedContract?._id}
       />
     );
   }
@@ -182,6 +199,12 @@ const RequestsList = () => {
                         Show details
                       </a>
 
+                      <a
+                        className="card-link"
+                        onClick={() => openLogForm(contract)}
+                      >
+                        Log form
+                      </a>
                       <div className="btn-group ms-5 d-flex float-end">
                       {(status && status === '1' && contract?.inPanel && contract?.panel && !closed) && (
                           <a
