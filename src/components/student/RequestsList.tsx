@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { axiosStudent } from "../../global/axios";
 import { AllContractsModel } from "../models/allContractsList.model";
 import { AdvisorFormModal } from "./AdvisorFormModal";
+import { PanelDetailsModal } from "./PanelDetailsModal";
 import { RequestDetailsModal } from "./RequestDetailsModal";
 
 const RequestsList = () => {
@@ -11,8 +12,9 @@ const RequestsList = () => {
   const [selectedContract, setSelectedContract] = useState<AllContractsModel>();
   const [contracts, setContracts] = useState<AllContractsModel[]>();
   const [closed, setClosed] = useState(false);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showRequestDetailsModal, setShowRequestDetailsModal] = useState(false);
   const [showAdvisorFormModal, setShowAdvisorFormModal] = useState(false);
+  const [showPanelDetailsModal, setShowPanelDetailsModal] = useState(false);
   const [showFillAdvisorFormModal, setShowFillAdvisorFormModal] = useState(false);
   const [showRes, setShowRes] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -20,12 +22,17 @@ const RequestsList = () => {
 
   const showDetails = (contract: AllContractsModel) => {
     setSelectedContract(contract);
-    setShowDetailsModal(true);
+    setShowRequestDetailsModal(true);
   };
 
   const openAdvisorForm = (contract: AllContractsModel) => {
     setSelectedContract(contract);
     setShowAdvisorFormModal(true);
+  }
+
+  const openPanelDetails = (contract: AllContractsModel) => {
+    setSelectedContract(contract);
+    setShowPanelDetailsModal(true);
   }
 
   const openFillAdvisorForm = (contract: AllContractsModel) => {
@@ -80,11 +87,11 @@ const RequestsList = () => {
     getContractsList();
   }, []);
 
-  if (showDetailsModal) {
+  if (showRequestDetailsModal) {
     return (
       <RequestDetailsModal
-        show={showDetailsModal}
-        setShow={setShowDetailsModal}
+        show={showRequestDetailsModal}
+        setShow={setShowRequestDetailsModal}
         id={selectedContract?._id}
       />
     );
@@ -97,6 +104,16 @@ const RequestsList = () => {
         setShow={setShowAdvisorFormModal}
         id={selectedContract?._id}
         disabled={true}
+      />
+    );
+  }
+
+  if (showPanelDetailsModal) {
+    return (
+      <PanelDetailsModal
+        show={showPanelDetailsModal}
+        setShow={setShowPanelDetailsModal}
+        id={selectedContract?._id}
       />
     );
   }
@@ -142,11 +159,11 @@ const RequestsList = () => {
             Opened
           </button>
         </div>
-        <div className="row">
+        <div className="d-flex">
           {contracts?.map(
             (contract: AllContractsModel, index: number) =>
               contract.isClosed === closed && (
-                <div className="col-lg-6" key={index}>
+                <div className="col-6" key={index}>
                   <div className="card">
                     <div className="card-body">
                       <h6 className="card-subtitle mb-2 text-muted">
@@ -166,6 +183,13 @@ const RequestsList = () => {
                       </a>
 
                       <div className="btn-group ms-5 d-flex float-end">
+                      {(status && status === '1' && contract?.inPanel && contract?.panel && !closed) && (
+                          <a
+                            className="btn btn-dark ms-5"
+                            onClick={() => openPanelDetails(contract)}
+                          >
+                          Panel And Marks
+                        </a>)}
                         {(status && status === '1' && contract?.advisorForm?._id && !closed) && (
                           <a
                             className="btn btn-dark ms-5"

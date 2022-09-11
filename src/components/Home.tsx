@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 import '../styling/shared.css';
+import { AuthContext } from '../context/Authentication';
 
 const Home = () => {
+  const { removeAuthState } = useContext(AuthContext);
+
+  useEffect(() => {
+    removeAuthState()
+  }, [])
+
   return (
     <div className="jumbotron jumbotron-fluid">
       <div className="container">

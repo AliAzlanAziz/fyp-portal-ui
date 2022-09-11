@@ -7,7 +7,7 @@ import { UserSignupModel } from '../models/userSignup.model';
 import { Toast } from 'react-bootstrap';
 
 const Signup = () => {
-  const { setRole, setAuth } = useContext(AuthContext);
+  const { setRole } = useContext(AuthContext);
   const [show, setShow ] = useState<boolean>(false);
   const [success, setSuccess ] = useState<boolean>(false);
   const [msg, setMsg ] = useState<String>('');

@@ -21,4 +21,6 @@ export class AllContractsModel  { // list of requests
     };
     acceptance?: AcceptanceStatus;
     isClosed?: Boolean;
+    inPanel?: Boolean;
+    panel?: String;
 }

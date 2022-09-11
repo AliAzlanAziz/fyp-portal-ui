@@ -14,7 +14,6 @@ type StudentDetailsModalProps = {
 enum StudentDetailsSection {
   RequestForm = 1,
   AdvisorForm = 2,
-  Panel = 3, //if used
 }
 
 const StudentDetailsModal = ({ ...props }: StudentDetailsModalProps) => {
@@ -65,7 +64,7 @@ const StudentDetailsModal = ({ ...props }: StudentDetailsModalProps) => {
 
       if (res.status === 200) {
         setSuccess(true);
-        setContract({...contract, marks: {...marks, admin: marks}})
+        setContract({...contract, marks: {...contract?.marks, admin: marks}})
       } else {
         setSuccess(false);
       }
@@ -88,7 +87,7 @@ const StudentDetailsModal = ({ ...props }: StudentDetailsModalProps) => {
     if(marks){
       if(marks < CONSTANT.MIN_MARKS || marks > CONSTANT.MAX_ADMIN_MARKS){
         setSuccess(false);
-        setRes(`Minimum marks can be ${CONSTANT.MIN_MARKS} and maximum can be ${CONSTANT.MAX_ADVISOR_MARKS}`);
+        setRes(`Minimum marks can be ${CONSTANT.MIN_MARKS} and maximum can be ${CONSTANT.MAX_ADMIN_MARKS}`);
         setShowRes(true);
         return false;
       }
@@ -123,9 +122,6 @@ const StudentDetailsModal = ({ ...props }: StudentDetailsModalProps) => {
               >
                 Advisor Form
               </Button>
-              {/* <Button variant="dark" onClick={() => setDetailsSection(StudentDetailsSection.Panel)}>
-                Panel
-              </Button> */}
             </div>
           )}
         </Modal.Header>

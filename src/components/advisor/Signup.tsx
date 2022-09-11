@@ -7,7 +7,7 @@ import { UserSignupModel } from '../models/userSignup.model';
 import { Toast } from 'react-bootstrap';
 
 const Signup = () => {
-  const { setRole, setAuth } = useContext(AuthContext);
+  const { setRole } = useContext(AuthContext);
   const [show, setShow ] = useState<boolean>(false);
   const [success, setSuccess ] = useState<boolean>(false);
   const [msg, setMsg ] = useState<String>('');
@@ -29,9 +29,6 @@ const Signup = () => {
       }
       setMsg(res.data.message);
       setShow(true);
-      setTimeout(() => {
-        // navigate('/advisor/dashboard')
-      }, 3000)
     }catch(error: any){
       setSuccess(false);
       setMsg(error?.response?.data?.message);

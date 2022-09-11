@@ -63,5 +63,11 @@ export class ContractPopulatedModel  { //contract details populated
     marks?: {
         admin?: Number,
         advisor?: Number
+        mid?: any[],
+        final?: any[]
+    };
+    user?: {
+        mid?: number,
+        final?: number,
     }
 }

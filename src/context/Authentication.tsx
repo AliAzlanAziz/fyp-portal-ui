@@ -4,39 +4,19 @@ import { UserRoles } from "../components/enums/roles.enum";
 import { axiosCommon } from "../global/axios";
 
 type AuthContextType = {
-  loggedin: boolean;
-  sessionToken: String;
-  setAuth(sessionToken: String, role: UserRoles): void;
+  setAuthState(sessionToken: String, role: UserRoles): void;
   removeAuthState(): void;
-  getAuthState(): void;
-  loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  profile: UserModel;
-  setProfile: React.Dispatch<React.SetStateAction<UserModel>>;
-  getProfile(): Promise<void>;
-  role: UserRoles;
-  setRole: React.Dispatch<React.SetStateAction<UserRoles>>;
+  getAuthState(): string;
+  getRole(): UserRoles;
+  setRole(role: UserRoles): void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
-  loggedin: false,
-  sessionToken: "",
-  setAuth(sessionToken: String, role: UserRoles): void {},
+  setAuthState(sessionToken: String, role: UserRoles): void {},
   removeAuthState(): void {},
-  getAuthState(): void {},
-  loading: false,
-  setLoading: (value: boolean | ((prevVar: boolean) => boolean)): void => {},
-  profile: new UserModel(),
-  setProfile: (
-    value: UserModel | ((prevVar: UserModel) => UserModel)
-  ): void => {},
-  getProfile(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      resolve();
-    });
-  },
-  role: UserRoles.NONE,
-  setRole: (value: UserRoles | ((prevVar: UserRoles) => UserRoles)): void => {},
+  getAuthState(): string { return "" },
+  getRole(): UserRoles { return UserRoles.NONE },
+  setRole(role: UserRoles): void {}
 });
 
 type AuthContextProviderProps = {
@@ -47,98 +27,54 @@ export const AuthContextProvider = ({
   children,
   ...props
 }: AuthContextProviderProps) => {
-  const [sessionToken, setSessionToken] = React.useState<String>("");
-  const [loggedin, setLoggedin] = React.useState<boolean>(false);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [role, setRole] = React.useState<UserRoles>(UserRoles.NONE);
-  const [profile, setProfile] = React.useState<UserModel>({});
 
-  const getProfile = async (): Promise<void> => {
+  const getAuthState = (): string => {
     try {
-      setLoading(true);
-
-      if (loggedin) {
-        const res = await axiosCommon({
-          url: "/profile",
-          method: "GET",
-        });
-        if (res.status === 200) {
-          //set user info context
-          // console.log(JSON.stringify(res.data))
-          localStorage.setItem("role", JSON.stringify(res.data.profile.role));
-          setProfile(res.data.profile);
-          setRole(res.data.profile.role);
-        }
-      }
-
-      setLoading(false);
-    } catch (error) {
-      console.log(error)
-      setLoading(false);
-    }
-  };
-
-  // Get current auth state from localStorage
-  const getAuthState = (): void => {
-    try {
-      setLoading(true);
-      
-      const roleDataString = localStorage.getItem("role");
-      const roleData = JSON.parse(roleDataString || "");
-      setRole(roleData);
-
       const authDataString = localStorage.getItem("sessionToken");
-      const authData = JSON.parse(authDataString || "");
-      setSessionToken(authData);
+      const authData: string = JSON.parse(authDataString || "")?.replaceAll('"', '');
 
-      if (authData !== "") {
-        setLoggedin(true);
-      }
-
-      setLoading(false);
+      return authData;
     } catch (err) {
-      setLoading(false);
+      console.log(err)
+      return "";
     }
   };
 
-  // Update localStorage & context state
-  const setAuth = (sessionToken: String, role: UserRoles) => {
+  const setAuthState = (sessionToken: String, role: UserRoles) => {
     try {
-      setLoading(true);
       localStorage.setItem("sessionToken", JSON.stringify(sessionToken));
       localStorage.setItem("role", JSON.stringify(role));
-
-      // Configure axios headers
-      // configureAxiosHeaders(auth.sessionToken);
-      setSessionToken(sessionToken);
-      setRole(role)
-
-      setLoggedin(true);
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
+    } catch (err) {
+      console.log(err)
     }
   };
 
   const removeAuthState = async () => {
     try {
-      setLoading(true);
-
       localStorage.setItem("sessionToken", JSON.stringify(""));
       localStorage.setItem("role", JSON.stringify(0));
-
-      // Configure axios headers
-      // configureAxiosHeaders('');
-
-      setSessionToken("");
-      setProfile(new UserModel());
-      setRole(UserRoles.NONE);
-      setLoggedin(false);
-
-      setLoading(false);
     } catch (err) {
-      setLoading(false);
+      console.log(err)
+    }
+  };
+
+  const setRole = (role: UserRoles) => {
+    try {
+      localStorage.setItem("role", JSON.stringify(role));
+    } catch (err) {
+      console.log(err)
+    }
+  };
+
+  const getRole = (): UserRoles => {
+    try {
+      const roleDataString = localStorage.getItem("role");
+      const roleData = JSON.parse(roleDataString || "");
+
+      return roleData;
+    } catch (err) {
+      console.log(err)
+      return UserRoles.NONE
     }
   };
 
@@ -146,25 +82,14 @@ export const AuthContextProvider = ({
     getAuthState();
   }, []);
 
-  React.useEffect(() => {
-    getProfile();
-  }, [loggedin]);
-
   return (
     <AuthContext.Provider
       value={{
-        sessionToken,
-        setAuth,
+        setAuthState,
         removeAuthState,
         getAuthState,
-        loggedin,
-        loading,
-        setLoading,
-        profile,
-        setProfile,
-        getProfile,
-        role,
         setRole,
+        getRole,
       }}
     >
       {children}

@@ -1,21 +1,17 @@
-import React, { useContext, useLayoutEffect } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/Authentication";
 import { UserRoles } from "./enums/roles.enum";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { removeAuthState, loggedin, getProfile, profile } = useContext(AuthContext);
+  const { removeAuthState, getAuthState, getRole } = useContext(AuthContext);
 
   const handleLogout = (e: any) => {
     e.preventDefault();
     removeAuthState();
     navigate('/home');
   }
-
-  useLayoutEffect(() => {
-    getProfile()
-  }, [loggedin])
 
   return (
     <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light mb-3" style={{marginTop: '50px !important'}}>
@@ -34,36 +30,36 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse d-flex" id="navbarNav">
           <ul className="navbar-nav">
-            {!loggedin && <li className="nav-item">
+            {(getAuthState() == "") && <li className="nav-item">
               <Link className="nav-link text-dark" aria-current="page" to="/home">
                 Home
               </Link>
             </li>}
-            {loggedin && 
+            {(getAuthState() != "" && getAuthState() != undefined) &&
             (<>
               <li className="nav-item">
                 <Link className="nav-link text-dark" aria-current="page" to='/home' onClick={(e) => handleLogout(e)}>
                   Logout
                 </Link>
               </li>
-              {profile.role === UserRoles.ADMIN && <li className="nav-item">
+              {getRole() === UserRoles.ADMIN && <li className="nav-item">
                 <Link className="nav-link text-dark" aria-current="page" to='/admin/dashboard'>
-                  {profile.name}
+                  Home
                 </Link>
               </li>}
-              {profile.role === UserRoles.ADVISOR && <li className="nav-item">
+              {getRole() === UserRoles.ADVISOR && <li className="nav-item">
                 <Link className="nav-link text-dark" aria-current="page"  to='/advisor/dashboard'>
-                  {profile.name}
+                  Home
                 </Link>
               </li>}
-              {profile.role === UserRoles.PANEL && <li className="nav-item">
+              {getRole() === UserRoles.PANEL && <li className="nav-item">
                 <Link className="nav-link text-dark" aria-current="page"  to='/panel/dashboard'>
-                  {profile.name}
+                  Home
                 </Link>
               </li>}
-              {profile.role === UserRoles.STUDENT && <li className="nav-item">
+              {getRole() === UserRoles.STUDENT && <li className="nav-item">
                 <Link className="nav-link text-dark" aria-current="page"  to='/student/dashboard'>
-                  {profile.name}
+                  Home
                 </Link>
               </li>}
             </>)}

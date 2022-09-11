@@ -15,6 +15,9 @@ const Dashboard = () => {
                     <Link className="list-group-item list-group-item-action bg-dark text-light" to="/advisor/requests/-1">
                         Request Reject
                     </Link>
+                    <Link className="list-group-item list-group-item-action bg-dark text-light" to="/advisor/panel">
+                        Assigned Panel
+                    </Link>
                 </div>
             </div>
         </div>

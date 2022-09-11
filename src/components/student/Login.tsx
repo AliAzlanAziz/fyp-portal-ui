@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Toast } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/Authentication";
-import { axiosStudent } from "../../global/axios";
+import { axiosStudent, refreshToken } from "../../global/axios";
 import Common from "../common/index";
 import { UserRoles } from "../enums/roles.enum";
 import { UserSigninModel } from "../models/userSignin.model";
 
 const Login = () => {
   let navigate = useNavigate();
-  const { setRole, setAuth } = useContext(AuthContext);
+  const { setRole, setAuthState } = useContext(AuthContext);
   const [show, setShow] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [msg, setMsg] = useState<String>("");
@@ -25,9 +25,9 @@ const Login = () => {
       });
 
       if (res.status === 200) {
-        // console.log(res.data);
         setSuccess(true);
-        setAuth(res.data.token, UserRoles.STUDENT);
+        setAuthState(res.data.token, UserRoles.STUDENT);
+        refreshToken();
       } else {
         setSuccess(false);
       }
@@ -35,7 +35,7 @@ const Login = () => {
       setShow(true);
       setTimeout(() => {
         navigate("/student/dashboard");
-      }, 3000);
+      }, 1000);
     } catch (error: any) {
       setSuccess(false);
       setMsg(error?.response?.data?.message);
@@ -45,27 +45,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    const authDataString = localStorage.getItem("sessionToken");
-    const authData = JSON.parse(authDataString || "");
-
-    if (authData !== "") {
-      const roleData = localStorage.getItem("role");
-      const role = JSON.parse(roleData || "0");
-
-      if (role === UserRoles.ADMIN) {
-        navigate("/admin/dashboard");
-      } else if (role === UserRoles.ADVISOR) {
-        navigate("/advisor/dashboard");
-      } else if (role === UserRoles.PANEL) {
-        navigate("/panel/dashboard");
-      } else if (role === UserRoles.STUDENT) {
-        navigate("/student/dashboard");
-      } else {
-        setRole(UserRoles.STUDENT);
-      }
-    } else {
-      setRole(UserRoles.STUDENT);
-    }
+    setRole(UserRoles.STUDENT);
   }, []);
 
   return (
@@ -75,7 +55,6 @@ const Login = () => {
         signupURL={"/student/signup"}
         role={UserRoles.STUDENT}
       />
-
       <div
         className="toast-container position-absolute"
         style={{ top: "70px", right: "30px" }}

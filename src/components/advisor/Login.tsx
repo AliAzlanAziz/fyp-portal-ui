@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/Authentication';
-import { axiosAdvisor } from '../../global/axios';
+import { axiosAdvisor, refreshToken } from '../../global/axios';
 import Common from '../common/index';
 import { UserRoles } from '../enums/roles.enum';
 import { UserSigninModel } from '../models/userSignin.model';
@@ -9,7 +9,7 @@ import { Toast } from 'react-bootstrap';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setRole, setAuth } = useContext(AuthContext);
+  const { setRole, setAuthState } = useContext(AuthContext);
   const [show, setShow ] = useState<boolean>(false);
   const [success, setSuccess ] = useState<boolean>(false);
   const [msg, setMsg ] = useState<String>('');
@@ -25,9 +25,9 @@ const Login = () => {
       })
   
       if(res.status === 200){
-        // console.log(res.data);
         setSuccess(true);
-        setAuth(res.data.token, UserRoles.ADVISOR);
+        setAuthState(res.data.token, UserRoles.ADVISOR);
+        refreshToken();
       }else{
         setSuccess(false);
       }
@@ -35,7 +35,7 @@ const Login = () => {
       setShow(true);
       setTimeout(() => {
         navigate('/advisor/dashboard')
-      }, 3000)
+      }, 1000)
     }catch(error: any){
       setSuccess(false);
       setMsg(error?.response?.data?.message);
@@ -45,27 +45,7 @@ const Login = () => {
   }
 
   useEffect(() => {
-    const authDataString = localStorage.getItem("sessionToken");
-    const authData = JSON.parse(authDataString || "");
-    
-    if(authData !== ""){
-      const roleData = localStorage.getItem("role");
-      const role = JSON.parse(roleData || "0");
-
-      if(role === UserRoles.ADMIN){
-        navigate('/admin/dashboard')
-      }else if(role === UserRoles.ADVISOR){
-        navigate('/advisor/dashboard')
-      }else if(role === UserRoles.PANEL){
-        navigate('/panel/dashboard')
-      }else if(role === UserRoles.STUDENT){
-        navigate('/student/dashboard')
-      }else{
-        setRole(UserRoles.ADVISOR);
-      }
-    }else{
-      setRole(UserRoles.ADVISOR);
-    }
+    setRole(UserRoles.ADVISOR);
   }, []);
 
   return (

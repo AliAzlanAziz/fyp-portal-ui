@@ -142,7 +142,7 @@ const ListForPanel = () => {
                         "Staff: " +
                         panelPerson.name +
                         " ~" +
-                        panelPerson.department
+                        (panelPerson.department ? panelPerson.department : "Unknown")
                       }
                       name="group1"
                       type="checkbox"

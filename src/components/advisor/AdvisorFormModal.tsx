@@ -57,7 +57,7 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
 
       if (res.status === 200) {
         setSuccess(true);
-        setContract({...contract, marks: {...marks, advisor: marks}})
+        setContract({...contract, marks: {...contract?.marks, advisor: marks}})
       } else {
         setSuccess(false);
       }

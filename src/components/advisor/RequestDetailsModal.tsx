@@ -110,7 +110,7 @@ const RequestDetailsModal = ({ ...props }: RequestDetailsModalProps) => {
               type="text"
               className="form-control"
               disabled={true}
-              value={contract?.studentTwo?.name}
+              value={contract?.studentTwo?.ID}
             ></input>
           </div>
         </form>

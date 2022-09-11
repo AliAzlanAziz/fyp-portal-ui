@@ -13,9 +13,9 @@ const Signup = () => {
   const [msg, setMsg ] = useState<String>('');
 
   const isFormValid = (form: UserSignupModel): boolean => {
-    if(form.ID && form.ID.length > 7){
+    if(form.ID && form.ID.length != 7){
       setSuccess(false);
-      setMsg('Student ID length cannot be greater than seven characters');
+      setMsg('Student ID length must be equal to seven (7) characters in length');
       setShow(true);
       return false
     }
