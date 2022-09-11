@@ -15,16 +15,6 @@ import { AuthContext } from "../context/Authentication";
 import { UserRoles } from "../components/enums/roles.enum";
 
 const Main = () => {
-  const { getAuthState } = useContext(AuthContext);
-
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (getAuthState() != "" && getAuthState() != undefined) {
-  //     navigate("/");
-  //   }
-  // }, []);
-
   return (
     <Router>
       <Basic.Navbar />

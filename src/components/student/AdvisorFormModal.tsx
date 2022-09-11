@@ -22,7 +22,7 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
   const [form, setForm] = useState<ContractModel>();
   const [showRes, setShowRes] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const [res, setRes] = useState<String>('');
+  const [res, setRes] = useState<String>("");
 
   const postAdvisorForm = async () => {
     try {
@@ -32,24 +32,24 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
         data: {
           contract: {
             id: id,
-            ...form
-          }
-        }
+            ...form,
+          },
+        },
       });
 
-      if(res.status === 200){
+      if (res.status === 200) {
         setSuccess(true);
-      }else{
+      } else {
         setSuccess(false);
       }
       setRes(res.data.message);
       setShowRes(true);
-      setTimeout(() => setShow(false), 4000)
-    }catch(error: any){
+      setTimeout(() => setShow(false), 4000);
+    } catch (error: any) {
       setSuccess(false);
       setRes(error?.response?.data?.message);
       setShowRes(true);
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -70,23 +70,23 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
   };
 
   const getRequestDetails = async () => {
-    try{
-        const res = await axiosStudent({
-            method: 'GET',
-            url: '/request/' + id,
-        })
+    try {
+      const res = await axiosStudent({
+        method: "GET",
+        url: "/request/" + id,
+      });
 
-        if(res.status === 200){
-            // console.log(res.data.contract)
-            setContract(res.data.contract)
-        }
-    }catch(error){
-        console.log(error)
+      if (res.status === 200) {
+        // console.log(res.data.contract)
+        setContract(res.data.contract);
+      }
+    } catch (error) {
+      console.log(error);
     }
-}
+  };
 
   useEffect(() => {
-    if(disabled){
+    if (disabled) {
       getAdvisorForm();
     }
     getRequestDetails();
@@ -94,7 +94,12 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
 
   return (
     <>
-      <Modal show={show} onHide={() => setShow(false)} size="xl" centered={true}>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        size="xl"
+        centered={true}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Advisor Form</Modal.Title>
         </Modal.Header>
@@ -120,7 +125,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.designation}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, designation: event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      designation: event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -130,7 +143,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.department}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, department: event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      department: event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -140,7 +161,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.qualification!}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, qualification: event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      qualification: event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -150,7 +179,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.specialization}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, specialization: event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      specialization: event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -160,7 +197,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.contact}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, contact: event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      contact: event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -170,7 +215,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.email}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, email: event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      email: event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -180,7 +233,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="numeric"
                 className="form-control"
                 value={form?.advisorForm?.semester}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, semester: +event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      semester: +event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -190,7 +251,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="numeric"
                 className="form-control"
                 value={form?.advisorForm?.year}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, year: +event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      year: +event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -200,7 +269,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.program}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, program: event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      program: event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -210,7 +287,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="numeric"
                 className="form-control"
                 value={form?.advisorForm?.creditHours}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, creditHours: +event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      creditHours: +event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -220,7 +305,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="numeric"
                 className="form-control"
                 value={form?.advisorForm?.compensation}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, compensation: +event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      compensation: +event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -231,7 +324,18 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.project?.name}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, project: { ...form?.advisorForm?.project, name: event.target.value } } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      project: {
+                        ...form?.advisorForm?.project,
+                        name: event.target.value,
+                      },
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -242,7 +346,18 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.project?.description}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, project: { ...form?.advisorForm?.project, description: event.target.value } } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      project: {
+                        ...form?.advisorForm?.project,
+                        description: event.target.value,
+                      },
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -253,7 +368,18 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.tools?.hardware}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, tools: { ...form?.advisorForm?.tools, hardware: event.target.value } } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      tools: {
+                        ...form?.advisorForm?.tools,
+                        hardware: event.target.value,
+                      },
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -264,7 +390,18 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.tools?.software}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, tools: { ...form?.advisorForm?.tools, software: event.target.value } } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      tools: {
+                        ...form?.advisorForm?.tools,
+                        software: event.target.value,
+                      },
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -275,7 +412,15 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="numeric"
                 className="form-control"
                 value={form?.advisorForm?.cost}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, cost: +event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      cost: +event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
@@ -330,21 +475,31 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
                 type="text"
                 className="form-control"
                 value={form?.advisorForm?.referenceNo}
-                onChange={(event) => setForm({ ...form, advisorForm: {...form?.advisorForm, referenceNo: event.target.value } })}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    advisorForm: {
+                      ...form?.advisorForm,
+                      referenceNo: event.target.value,
+                    },
+                  })
+                }
                 disabled={disabled}
               ></input>
             </div>
           </form>
         </div>
         <Modal.Footer>
-          <ReactToPrint
-            trigger={() => <Button variant="warning">Print</Button>}
-            content={() => componentRef.current}
-          />
-          {disabled && ( 
-            <div style={{ display: "none" }}>
+          {disabled && (
+            <>
+              <ReactToPrint
+                trigger={() => <Button variant="warning">Print</Button>}
+                content={() => componentRef.current}
+              />
+              <div style={{ display: "none" }}>
                 <PrintAdvisorFormModal ref={componentRef} contract={form} />
-            </div>
+              </div>
+            </>
           )}
           {!disabled && (
             <Button variant="primary" onClick={() => postAdvisorForm()}>
@@ -357,16 +512,27 @@ const AdvisorFormModal = ({ ...props }: AdvisorFormModalProps) => {
         </Modal.Footer>
       </Modal>
 
-      <div className="toast-container position-absolute" style={{top: '70px', right: '30px', zIndex: 200000}}>
-          <Toast onClose={() => setShowRes(false)} show={showRes} delay={3000} autohide >
+      <div
+        className="toast-container position-absolute"
+        style={{ top: "70px", right: "30px", zIndex: 200000 }}
+      >
+        <Toast
+          onClose={() => setShowRes(false)}
+          show={showRes}
+          delay={3000}
+          autohide
+        >
+          {success && (
+            <Toast.Header className="bg-primary text-light">
+              <strong className="me-auto">Success!</strong>
+            </Toast.Header>
+          )}
 
-          {success && <Toast.Header className="bg-primary text-light">
-            <strong className="me-auto">Success!</strong>
-          </Toast.Header>}
-
-          {!success && <Toast.Header className="bg-danger text-light">
-            <strong className="me-auto">Error!</strong>
-          </Toast.Header>}
+          {!success && (
+            <Toast.Header className="bg-danger text-light">
+              <strong className="me-auto">Error!</strong>
+            </Toast.Header>
+          )}
 
           <Toast.Body>{res}</Toast.Body>
         </Toast>

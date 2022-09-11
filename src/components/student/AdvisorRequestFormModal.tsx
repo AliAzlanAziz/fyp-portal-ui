@@ -23,12 +23,15 @@ const AdvisorRequestFormModal = ({
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     try {
       e.preventDefault();
-      setForm({ ...form, advisor: advisor?._id });
+
       const res = await axiosStudent({
         method: "POST",
         url: "/request/advisor",
         data: {
-          contract: form,
+          contract: {
+            ...form,
+            advisor: advisor?._id
+          },
         },
       });
 
@@ -48,7 +51,7 @@ const AdvisorRequestFormModal = ({
       console.log(error);
     }
   };
-
+  
   return (
     <>
       <Modal
@@ -60,127 +63,127 @@ const AdvisorRequestFormModal = ({
         <Modal.Header closeButton>
           <Modal.Title>Advisor Request Form</Modal.Title>
         </Modal.Header>
-          <div className="form-container">
-            <form className="form-horizontal">
-              <div className="form-group">
-                <label>Advisor Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={advisor?.name}
-                  disabled={true}
-                ></input>
-              </div>
-              <div className="form-group"></div>
-              <div className="form-group">
-                <label>Project Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Project Name"
-                  onChange={(event) =>
-                    setForm({
-                      ...form,
-                      project: { ...form?.project, name: event.target.value },
-                    })
-                  }
-                ></input>
-              </div>
-              <div className="form-group">
-                <label>Project Description</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Project Description"
-                  onChange={(event) =>
-                    setForm({
-                      ...form,
-                      project: {
-                        ...form?.project,
-                        description: event.target.value,
-                      },
-                    })
-                  }
-                ></input>
-              </div>
-              <div className="form-group">
-                <label>First Student</label>
-              </div>
-              <div className="form-group"></div>
-              <div className="form-group">
-                <label>Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter First Student Name"
-                  onChange={(event) =>
-                    setForm({
-                      ...form,
-                      studentOne: {
-                        ...form?.studentOne,
-                        name: event.target.value,
-                      },
-                    })
-                  }
-                ></input>
-              </div>
-              <div className="form-group">
-                <label>ID</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter First Student ID"
-                  onChange={(event) =>
-                    setForm({
-                      ...form,
-                      studentOne: {
-                        ...form?.studentOne,
-                        ID: event.target.value,
-                      },
-                    })
-                  }
-                ></input>
-              </div>
-              <div className="form-group">
-                <label>Second Student</label>
-              </div>
-              <div className="form-group"></div>
-              <div className="form-group">
-                <label>Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Second Student Name"
-                  onChange={(event) =>
-                    setForm({
-                      ...form,
-                      studentTwo: {
-                        ...form?.studentTwo,
-                        name: event.target.value,
-                      },
-                    })
-                  }
-                ></input>
-              </div>
-              <div className="form-group">
-                <label>ID</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Second Student ID"
-                  onChange={(event) =>
-                    setForm({
-                      ...form,
-                      studentTwo: {
-                        ...form?.studentTwo,
-                        ID: event.target.value,
-                      },
-                    })
-                  }
-                ></input>
-              </div>
-            </form>
-          </div>
+        <div className="form-container">
+          <form className="form-horizontal">
+            <div className="form-group">
+              <label>Advisor Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={advisor?.name}
+                disabled={true}
+              ></input>
+            </div>
+            <div className="form-group"></div>
+            <div className="form-group">
+              <label>Project Name</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter Project Name"
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    project: { ...form?.project, name: event.target.value },
+                  })
+                }
+              ></input>
+            </div>
+            <div className="form-group">
+              <label>Project Description</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter Project Description"
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    project: {
+                      ...form?.project,
+                      description: event.target.value,
+                    },
+                  })
+                }
+              ></input>
+            </div>
+            <div className="form-group">
+              <label>First Student</label>
+            </div>
+            <div className="form-group"></div>
+            <div className="form-group">
+              <label>Name</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter First Student Name"
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    studentOne: {
+                      ...form?.studentOne,
+                      name: event.target.value,
+                    },
+                  })
+                }
+              ></input>
+            </div>
+            <div className="form-group">
+              <label>ID</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter First Student ID"
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    studentOne: {
+                      ...form?.studentOne,
+                      ID: event.target.value,
+                    },
+                  })
+                }
+              ></input>
+            </div>
+            <div className="form-group">
+              <label>Second Student</label>
+            </div>
+            <div className="form-group"></div>
+            <div className="form-group">
+              <label>Name</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter Second Student Name"
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    studentTwo: {
+                      ...form?.studentTwo,
+                      name: event.target.value,
+                    },
+                  })
+                }
+              ></input>
+            </div>
+            <div className="form-group">
+              <label>ID</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter Second Student ID"
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    studentTwo: {
+                      ...form?.studentTwo,
+                      ID: event.target.value,
+                    },
+                  })
+                }
+              ></input>
+            </div>
+          </form>
+        </div>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>
             Close
@@ -193,7 +196,7 @@ const AdvisorRequestFormModal = ({
 
       <div
         className="toast-container position-absolute"
-        style={{ top: "70px", right: "30px", zIndex: 200000}}
+        style={{ top: "70px", right: "30px", zIndex: 200000 }}
       >
         <Toast
           onClose={() => setShowRes(false)}

@@ -147,7 +147,7 @@ const AssignedPanel = () => {
   const calculateMarks = (marksArray?: any[]): number => {
     let marks = 0;
 
-    if (!marksArray) {
+    if (!marksArray || marksArray == undefined || marksArray == null) {
       return marks;
     }
 
@@ -234,11 +234,11 @@ const AssignedPanel = () => {
                             <span>
                               <strong>
                                 Mid Term Marks{" "}
-                                {calculateMarks(contract?.marks?.mid)}
+                                {contract?.marks?.mid && calculateMarks(contract?.marks?.mid)}
                               </strong>
-                              <strong className="float-end">
+                              {contract?.user?.mid && <strong className="float-end">
                                 Given {contract?.user?.mid}
-                              </strong>
+                              </strong>}
                             </span>
                           </OverlayTrigger>
                           <div className="input-group">
@@ -271,11 +271,11 @@ const AssignedPanel = () => {
                             <span>
                               <strong>
                                 Final Term Marks{" "}
-                                {calculateMarks(contract?.marks?.final)}
+                                {contract?.marks?.final && calculateMarks(contract?.marks?.final)}
                               </strong>
-                              <strong className="float-end">
+                              {contract?.user?.final && <strong className="float-end">
                                 Given {contract?.user?.final}
-                              </strong>
+                              </strong>}
                             </span>
                           </OverlayTrigger>
                           <div className="input-group">
